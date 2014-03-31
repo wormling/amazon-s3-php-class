@@ -154,6 +154,15 @@ class S3
 	 */
 	public static $sslCACert = null;
 	
+                  /**
+                   * Use server side encryption?
+                   *
+                   * @var boolean
+                   * @access public
+                   * @static
+                   */
+                  public static $useServerSideEncryption = false;
+                  
 	/**
 	 * AWS Key Pair ID
 	 *
@@ -657,6 +666,9 @@ class S3
 				$input['type'] = 'application/octet-stream';
 		}
 
+		if (self::$useServerSideEncryption)
+			$rest->setAmzHeader('x-amz-server-side-encryption', 'AES256');
+                
 		if ($storageClass !== self::STORAGE_CLASS_STANDARD) // Storage class
 			$rest->setAmzHeader('x-amz-storage-class', $storageClass);
 
